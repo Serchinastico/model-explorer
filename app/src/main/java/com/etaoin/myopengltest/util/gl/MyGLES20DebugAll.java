@@ -2,6 +2,9 @@ package com.etaoin.myopengltest.util.gl;
 
 import android.opengl.GLES20;
 
+/**
+ * Wrapper for all the OpenGL ES 2.0 calls for debugging purposes.
+ */
 public class MyGLES20DebugAll implements MyGLES20 {
 
 	@Override

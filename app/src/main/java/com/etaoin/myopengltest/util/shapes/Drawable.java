@@ -6,4 +6,5 @@ package com.etaoin.myopengltest.util.shapes;
 public interface Drawable {
 
 	public void draw(float[] vpMatrix);
+
 }

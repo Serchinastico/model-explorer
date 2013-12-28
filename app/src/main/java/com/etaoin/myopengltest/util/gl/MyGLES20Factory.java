@@ -1,5 +1,8 @@
 package com.etaoin.myopengltest.util.gl;
 
+/**
+ * Factory for all the OpenGL ES 2.0 wrappers.
+ */
 public class MyGLES20Factory {
 
 	public static final int DEBUG_LEVEL_NONE = 0;
@@ -22,11 +25,11 @@ public class MyGLES20Factory {
 
 		return myGLES20;
 	}
-}
 
-class UnkownGLES20TypeRuntimeException extends RuntimeException {
+	public static class UnkownGLES20TypeRuntimeException extends RuntimeException {
 
-	public UnkownGLES20TypeRuntimeException(int type) {
-		super("Unknown MyGLES20 type: " + type);
+		public UnkownGLES20TypeRuntimeException(int type) {
+			super("Unknown MyGLES20 type: " + type);
+		}
 	}
 }

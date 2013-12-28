@@ -1,5 +1,8 @@
 package com.etaoin.myopengltest.util.shaders;
 
+/**
+ * The most basic vertex shader. It only renders every object in it's position.
+ */
 public class SampleVertexShader implements Shader {
 
 	@Override

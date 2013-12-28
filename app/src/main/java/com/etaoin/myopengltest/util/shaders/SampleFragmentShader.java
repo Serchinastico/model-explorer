@@ -1,5 +1,8 @@
 package com.etaoin.myopengltest.util.shaders;
 
+/**
+ * The most simple fragment shader. Only renders the color of the objects.
+ */
 public class SampleFragmentShader implements Shader {
 
 	@Override

@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+/**
+ * Util class for reading content from disk/memory.
+ */
 public class FileReader {
 
 	public BufferedReader toBufferedReader(String path) throws FileNotFoundException {

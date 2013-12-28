@@ -14,6 +14,9 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.List;
 
+/**
+ * Drawable model.
+ */
 public class Model implements Drawable {
 
 	private FloatBuffer vertexBuffer;
@@ -40,6 +43,7 @@ public class Model implements Drawable {
 	public Model() {
 		Matrix.setIdentityM(modelMatrix, 0);
 
+		// TODO Use ShaderFactory
 		String vertexShaderCode =
 			"uniform mat4 uMVPMatrix;" +
 			"attribute vec4 vPosition;" +

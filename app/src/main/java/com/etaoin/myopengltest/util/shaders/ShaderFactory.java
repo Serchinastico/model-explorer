@@ -1,5 +1,8 @@
 package com.etaoin.myopengltest.util.shaders;
 
+/**
+ * Factory for all the available shaders.
+ */
 public class ShaderFactory {
 
 	public static final int SAMPLE_VERTEX_SHADER = 0;
@@ -19,10 +22,10 @@ public class ShaderFactory {
 		}
 		return shader;
 	}
-}
 
-class InvalidShaderTypeException extends Exception {
-	public InvalidShaderTypeException(int type) {
-		super("Trying to create a shader with an invalid type: " + type);
+	public static class InvalidShaderTypeException extends Exception {
+		public InvalidShaderTypeException(int type) {
+			super("Trying to create a shader with an invalid type: " + type);
+		}
 	}
 }

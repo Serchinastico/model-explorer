@@ -6,6 +6,9 @@ import com.etaoin.myopengltest.util.io.ParsedModel;
 
 import java.util.List;
 
+/**
+ * Parsed model created through a .obj description.
+ */
 public class ObjParsedModel implements ParsedModel {
 
 	private Vector3[] vertices;

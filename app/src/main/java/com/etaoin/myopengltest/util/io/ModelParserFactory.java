@@ -5,6 +5,9 @@ import com.etaoin.myopengltest.util.io.obj.ObjParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+/**
+ * Factory that creates the correct ModelParser from a file path.
+ */
 public class ModelParserFactory {
 
 	public static final int OBJ_MODEL_TYPE = 0;

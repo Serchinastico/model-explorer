@@ -1,5 +1,8 @@
 package com.etaoin.myopengltest.util.gl;
 
+/**
+ * Wrapper for all the OpenGL ES 2.0 calls.
+ */
 public interface MyGLES20 {
 
 	public void glClear(int mask);

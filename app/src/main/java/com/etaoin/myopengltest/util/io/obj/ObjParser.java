@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parser for .obj models
+ */
 public class ObjParser implements ModelParser {
 
 	private BufferedReader content;
@@ -44,10 +47,6 @@ public class ObjParser implements ModelParser {
 		}
 
 		model = new ObjParsedModel(vertices, faces);
-		return model;
-	}
-
-	public ParsedModel getModel() {
 		return model;
 	}
 
