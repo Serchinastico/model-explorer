@@ -18,18 +18,23 @@ public class ModelParserFactory {
 		this.fileReader = fileReader;
 	}
 
-	public ModelParser createModelParser(int type, String path) throws IOException {
-		ModelParser modelParser = null;
-
+	public ModelParser createModelParser(int type, String path) throws IOException, InvalidModelParserTypeException {
+		ModelParser modelParser;
 		switch (type) {
 			case OBJ_MODEL_TYPE:
 				BufferedReader reader = fileReader.toBufferedReader(path);
 				modelParser = new ObjParser(reader);
 				break;
 			default:
-				// TODO Throw exception!
+				throw new InvalidModelParserTypeException(type);
 		}
 
 		return modelParser;
+	}
+
+	public static class InvalidModelParserTypeException extends Exception {
+		public InvalidModelParserTypeException(int type) {
+			super("Trying to create a model parser with an invalid type: " + type);
+		}
 	}
 }

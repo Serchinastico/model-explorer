@@ -1,14 +1,15 @@
 package com.etaoin.myopengltest.util.io.obj;
 
+import com.etaoin.myopengltest.util.geometry.Face;
+import com.etaoin.myopengltest.util.geometry.TriangleList;
 import com.etaoin.myopengltest.util.geometry.Vector3;
-import com.etaoin.myopengltest.util.io.Face;
+import com.etaoin.myopengltest.util.geometry.Vector3List;
 import com.etaoin.myopengltest.util.io.ModelParser;
-import com.etaoin.myopengltest.util.io.ParsedModel;
+import com.etaoin.myopengltest.util.shapes.Drawable;
+import com.etaoin.myopengltest.util.shapes.Model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Parser for .obj models
@@ -16,18 +17,18 @@ import java.util.List;
 public class ObjParser implements ModelParser {
 
 	private BufferedReader content;
-	private List<Vector3> vertices = new ArrayList<Vector3>();
-	private List<Vector3> normals = new ArrayList<Vector3>();
-	private List<Vector3> textureCoordinates = new ArrayList<Vector3>();
-	private List<Face> faces = new ArrayList<Face>();
-	private ObjParsedModel model;
+	private Vector3List vertices = new Vector3List();
+	private Vector3List normals = new Vector3List();
+	private Vector3List textureCoordinates = new Vector3List();
+	private TriangleList faces = new TriangleList();
+	private Model model;
 	private boolean isSmoothEnabled = false; // TODO Use?
 
 	public ObjParser(BufferedReader content) {
 		this.content = content;
 	}
 
-	public ParsedModel parse() throws IOException {
+	public Drawable parse() throws IOException {
 		String line;
 		while ((line = content.readLine()) != null) {
 			line = line.trim();
@@ -46,7 +47,7 @@ public class ObjParser implements ModelParser {
 			}
 		}
 
-		model = new ObjParsedModel(vertices, faces);
+		model = new Model(vertices.toFloatBuffer(), faces.toShortBuffer(), faces.size() * 3);
 		return model;
 	}
 

@@ -8,7 +8,6 @@ import com.etaoin.myopengltest.util.gl.MyGLES20;
 import com.etaoin.myopengltest.util.io.ModelParser;
 import com.etaoin.myopengltest.util.io.ModelParserFactory;
 import com.etaoin.myopengltest.util.shapes.Drawable;
-import com.etaoin.myopengltest.util.shapes.Model;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,10 +45,12 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 		myGLES20.glClearColor(0.0f, 0.2f, blue, 1.0f);
 
 		try {
-			ModelParser modelParser = modelParserFactory.createModelParser(ModelParserFactory.OBJ_MODEL_TYPE, "teapot.obj");
-			Drawable model = new Model(modelParser.parse());
-			addDrawable(model);
+			ModelParser modelParser = modelParserFactory.createModelParser(ModelParserFactory.OBJ_MODEL_TYPE,
+				"teapot.obj");
+			addDrawable(modelParser.parse());
 		} catch (IOException exception) {
+			// TODO Handle exception
+		} catch (ModelParserFactory.InvalidModelParserTypeException exception) {
 			// TODO Handle exception
 		}
 	}

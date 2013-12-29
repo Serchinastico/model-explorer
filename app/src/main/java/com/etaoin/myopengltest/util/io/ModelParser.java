@@ -1,5 +1,7 @@
 package com.etaoin.myopengltest.util.io;
 
+import com.etaoin.myopengltest.util.shapes.Drawable;
+
 import java.io.IOException;
 
 /**
@@ -7,6 +9,6 @@ import java.io.IOException;
  */
 public interface ModelParser {
 
-	public ParsedModel parse() throws IOException;
+	public Drawable parse() throws IOException;
 
 }
