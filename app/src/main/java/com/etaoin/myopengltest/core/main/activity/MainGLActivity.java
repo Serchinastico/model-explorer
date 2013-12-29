@@ -24,9 +24,9 @@ public class MainGLActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		MyGLES20Factory myGLES20Factory = new MyGLES20Factory();
-		MyGLES20 myGLES20 = myGLES20Factory.createGLES20(MyGLES20Factory.DEBUG_LEVEL_ALL);
-		ModelParserFactory modelParserFactory = new ModelParserFactory(new FileReader());
-		renderer = new MainGLRenderer(modelParserFactory, myGLES20);
+		MyGLES20 gles20 = myGLES20Factory.createGLES20(MyGLES20Factory.DEBUG_LEVEL_ALL);
+		ModelParserFactory modelParserFactory = new ModelParserFactory(new FileReader(), gles20);
+		renderer = new MainGLRenderer(modelParserFactory, gles20);
 		view = new MainGLSurfaceView(this, renderer);
 		setContentView(view);
 	}

@@ -1,12 +1,13 @@
 package com.etaoin.myopengltest.core.main.renderers;
 
-import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
+import com.etaoin.myopengltest.util.geometry.Vector3;
 import com.etaoin.myopengltest.util.gl.MyGLES20;
 import com.etaoin.myopengltest.util.io.ModelParser;
 import com.etaoin.myopengltest.util.io.ModelParserFactory;
+import com.etaoin.myopengltest.util.light.PointLight;
 import com.etaoin.myopengltest.util.shapes.Drawable;
 
 import java.io.IOException;
@@ -24,10 +25,11 @@ import javax.microedition.khronos.opengles.GL10;
 public class MainGLRenderer implements GLSurfaceView.Renderer {
 
 	private Map<Integer, Drawable> drawables = new HashMap<Integer, Drawable>();
+	private PointLight light;
 	private int nextDrawableId = 0;
 
 	private ModelParserFactory modelParserFactory;
-	private MyGLES20 myGLES20;
+	private MyGLES20 gles20;
 
 	private float[] projectionMatrix = new float[16];
 	private float[] viewMatrix = new float[16];
@@ -35,14 +37,14 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 	private boolean isBlueIncrementing = true;
 	private float angle = 0f;
 
-	public MainGLRenderer(ModelParserFactory modelParserFactory, MyGLES20 myGLES20) {
+	public MainGLRenderer(ModelParserFactory modelParserFactory, MyGLES20 gles20) {
 		this.modelParserFactory = modelParserFactory;
-		this.myGLES20 = myGLES20;
+		this.gles20 = gles20;
 	}
 
 	@Override
 	public void onSurfaceCreated(GL10 gl10, EGLConfig config) {
-		myGLES20.glClearColor(0.0f, 0.2f, blue, 1.0f);
+		gles20.glClearColor(0.0f, 0.2f, blue, 1.0f);
 
 		try {
 			ModelParser modelParser = modelParserFactory.createModelParser(ModelParserFactory.OBJ_MODEL_TYPE,
@@ -53,11 +55,13 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 		} catch (ModelParserFactory.InvalidModelParserTypeException exception) {
 			// TODO Handle exception
 		}
+
+		this.light = new PointLight(new Vector3(3f, 3f, 3f));
 	}
 
 	@Override
 	public void onSurfaceChanged(GL10 gl10, int width, int height) {
-		myGLES20.glViewport(0, 0, width, height);
+		gles20.glViewport(0, 0, width, height);
 
 		float ratio = (float) width / height;
 		Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 1f, 10f);
@@ -65,8 +69,8 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onDrawFrame(GL10 gl10) {
-		myGLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-		myGLES20.glClearColor(0.0f, 0.2f, blue, 1.0f);
+		gles20.glClear(android.opengl.GLES20.GL_COLOR_BUFFER_BIT);
+		gles20.glClearColor(0.0f, 0.2f, blue, 1.0f);
 		calculateNextBackgroundColor();
 
 		float[] vpMatrix = new float[16];
@@ -82,14 +86,6 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 			Drawable drawable = (Drawable) pair.getValue();
 			drawable.draw(vpMatrix);
 		}
-	}
-
-	public static int loadShader(int type, String shaderCode) {
-		int shader = GLES20.glCreateShader(type);
-		GLES20.glShaderSource(shader, shaderCode);
-		GLES20.glCompileShader(shader);
-
-		return shader;
 	}
 
 	public int addDrawable(Drawable drawable) {

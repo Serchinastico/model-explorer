@@ -4,6 +4,7 @@ import com.etaoin.myopengltest.util.geometry.Face;
 import com.etaoin.myopengltest.util.geometry.TriangleList;
 import com.etaoin.myopengltest.util.geometry.Vector3;
 import com.etaoin.myopengltest.util.geometry.Vector3List;
+import com.etaoin.myopengltest.util.gl.MyGLES20;
 import com.etaoin.myopengltest.util.io.ModelParser;
 import com.etaoin.myopengltest.util.shapes.Drawable;
 import com.etaoin.myopengltest.util.shapes.Model;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class ObjParser implements ModelParser {
 
 	private BufferedReader content;
+	private MyGLES20 gles20;
 	private Vector3List vertices = new Vector3List();
 	private Vector3List normals = new Vector3List();
 	private Vector3List textureCoordinates = new Vector3List();
@@ -24,8 +26,9 @@ public class ObjParser implements ModelParser {
 	private Model model;
 	private boolean isSmoothEnabled = false; // TODO Use?
 
-	public ObjParser(BufferedReader content) {
+	public ObjParser(BufferedReader content, MyGLES20 gles20) {
 		this.content = content;
+		this.gles20 = gles20;
 	}
 
 	public Drawable parse() throws IOException {
@@ -47,7 +50,7 @@ public class ObjParser implements ModelParser {
 			}
 		}
 
-		model = new Model(vertices.toFloatBuffer(), faces.toShortBuffer(), faces.size() * 3);
+		model = new Model(vertices.toFloatBuffer(), faces.toShortBuffer(), faces.size() * 3, gles20);
 		return model;
 	}
 

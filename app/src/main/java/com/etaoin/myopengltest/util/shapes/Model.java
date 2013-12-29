@@ -3,7 +3,7 @@ package com.etaoin.myopengltest.util.shapes;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
-import com.etaoin.myopengltest.core.main.renderers.MainGLRenderer;
+import com.etaoin.myopengltest.util.gl.MyGLES20;
 import com.etaoin.myopengltest.util.shaders.SampleFragmentShader;
 import com.etaoin.myopengltest.util.shaders.SampleVertexShader;
 import com.etaoin.myopengltest.util.shaders.Shader;
@@ -15,6 +15,8 @@ import java.nio.ShortBuffer;
  * Drawable model built using triangles.
  */
 public class Model implements Drawable {
+
+	private MyGLES20 gles20;
 
 	/**
 	 * OpenGL Vertex buffer.
@@ -45,44 +47,45 @@ public class Model implements Drawable {
 	};
 
 	// TODO Delete shader creation!
-	public Model(FloatBuffer vertexBuffer, ShortBuffer drawListBuffer, int verticesCount) {
-		this(vertexBuffer, drawListBuffer, verticesCount, new SampleVertexShader(), new SampleFragmentShader());
+	public Model(FloatBuffer vertexBuffer, ShortBuffer drawListBuffer, int verticesCount, MyGLES20 gles20) {
+		this(vertexBuffer, drawListBuffer, verticesCount, new SampleVertexShader(), new SampleFragmentShader(), gles20);
 	}
 
 	public Model(FloatBuffer vertexBuffer, ShortBuffer drawListBuffer, int verticesCount, Shader vertexShader,
-			Shader fragmentShader) {
+			Shader fragmentShader, MyGLES20 gles20) {
 		this.vertexBuffer = vertexBuffer;
 		this.drawListBuffer = drawListBuffer;
 		this.verticesCount = verticesCount;
+		this.gles20 = gles20;
 
 		// TODO Configurable!
 		Matrix.setIdentityM(modelMatrix, 0);
 
-		int vertexShaderHandler = MainGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShader.getCode());
-		int fragmentShaderHandler = MainGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader.getCode());
+		int vertexShaderHandler = gles20.loadShader(GLES20.GL_VERTEX_SHADER, vertexShader.getCode());
+		int fragmentShaderHandler = gles20.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader.getCode());
 
-		program = GLES20.glCreateProgram();
-		GLES20.glAttachShader(program, vertexShaderHandler);
-		GLES20.glAttachShader(program, fragmentShaderHandler);
-		GLES20.glLinkProgram(program);
+		program = gles20.glCreateProgram();
+		gles20.glAttachShader(program, vertexShaderHandler);
+		gles20.glAttachShader(program, fragmentShaderHandler);
+		gles20.glLinkProgram(program);
 	}
 
 	public void draw(float[] vpMatrix) {
 		Matrix.multiplyMM(mvpMatrix, 0, vpMatrix, 0, modelMatrix, 0);
 
-		GLES20.glUseProgram(program);
+		gles20.glUseProgram(program);
 
-		int positionHandle = GLES20.glGetAttribLocation(program, "vPosition");
-		GLES20.glEnableVertexAttribArray(positionHandle);
-		GLES20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false,
+		int positionHandle = gles20.glGetAttribLocation(program, "vPosition");
+		gles20.glEnableVertexAttribArray(positionHandle);
+		gles20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false,
 			COORDS_PER_VERTEX * BYTES_PER_FLOAT, vertexBuffer);
 
-		int colorHandle = GLES20.glGetUniformLocation(program, "vColor");
-		GLES20.glUniform4fv(colorHandle, 1, color, 0);
+		int colorHandle = gles20.glGetUniformLocation(program, "vColor");
+		gles20.glUniform4fv(colorHandle, 1, color, 0);
 
-		int mvpMatrixHandle = GLES20.glGetUniformLocation(program, "uMVPMatrix");
-		GLES20.glUniformMatrix4fv(mvpMatrixHandle, 1, false, mvpMatrix, 0);
+		int mvpMatrixHandle = gles20.glGetUniformLocation(program, "uMVPMatrix");
+		gles20.glUniformMatrix4fv(mvpMatrixHandle, 1, false, mvpMatrix, 0);
 
-		GLES20.glDrawElements(GLES20.GL_TRIANGLES, verticesCount, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+		gles20.glDrawElements(GLES20.GL_TRIANGLES, verticesCount, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 	}
 }
