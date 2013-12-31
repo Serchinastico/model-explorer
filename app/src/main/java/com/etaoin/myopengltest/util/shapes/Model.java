@@ -2,7 +2,6 @@ package com.etaoin.myopengltest.util.shapes;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
-
 import com.etaoin.myopengltest.util.gl.MyGLES20;
 import com.etaoin.myopengltest.util.shaders.SampleFragmentShader;
 import com.etaoin.myopengltest.util.shaders.SampleVertexShader;
@@ -33,13 +32,17 @@ public class Model implements Drawable {
 	 */
 	private int verticesCount;
 
+	private Shader vertexShader;
+
+	private Shader fragmentShader;
+
 	private static final int BYTES_PER_FLOAT = 4;
 	private static final int COORDS_PER_VERTEX = 3;
 
 	private float[] modelMatrix = new float[16];
 	private float[] mvpMatrix = new float[16];
 
-	private final int program;
+	private int program;
 
 	// TODO Configurable!
 	private float color[] = {
@@ -57,10 +60,14 @@ public class Model implements Drawable {
 		this.drawListBuffer = drawListBuffer;
 		this.verticesCount = verticesCount;
 		this.gles20 = gles20;
+		this.vertexShader = vertexShader;
+		this.fragmentShader = fragmentShader;
 
 		// TODO Configurable!
 		Matrix.setIdentityM(modelMatrix, 0);
+	}
 
+	public void initialize() {
 		int vertexShaderHandler = gles20.loadShader(GLES20.GL_VERTEX_SHADER, vertexShader.getCode());
 		int fragmentShaderHandler = gles20.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader.getCode());
 
