@@ -3,6 +3,9 @@ package com.etaoin.myopengltest.core.main.context;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsible for swapping between contexts and send events to the right context.
+ */
 public class ContextManager {
 
 	private List<Context> contexts;
@@ -28,8 +31,8 @@ public class ContextManager {
 		}
 	}
 
-	public void draw(float[] vpMatrix) {
-		currentContext.draw(vpMatrix);
+	public void draw() {
+		currentContext.draw();
 	}
 
 	public Context getCurrentContext() {

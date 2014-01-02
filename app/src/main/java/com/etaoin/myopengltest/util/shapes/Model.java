@@ -2,13 +2,17 @@ package com.etaoin.myopengltest.util.shapes;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import com.etaoin.myopengltest.core.main.context.ContextManager;
+import com.etaoin.myopengltest.util.geometry.Vector3;
 import com.etaoin.myopengltest.util.gl.MyGLES20;
+import com.etaoin.myopengltest.util.light.PointLight;
 import com.etaoin.myopengltest.util.shaders.SampleFragmentShader;
 import com.etaoin.myopengltest.util.shaders.SampleVertexShader;
 import com.etaoin.myopengltest.util.shaders.Shader;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.Map;
 
 /**
  * Drawable model built using triangles.
@@ -16,6 +20,7 @@ import java.nio.ShortBuffer;
 public class Model implements Drawable {
 
 	private MyGLES20 gles20;
+	private ContextManager contextManager;
 
 	/**
 	 * OpenGL Vertex buffer.
@@ -50,16 +55,19 @@ public class Model implements Drawable {
 	};
 
 	// TODO Delete shader creation!
-	public Model(FloatBuffer vertexBuffer, ShortBuffer drawListBuffer, int verticesCount, MyGLES20 gles20) {
-		this(vertexBuffer, drawListBuffer, verticesCount, new SampleVertexShader(), new SampleFragmentShader(), gles20);
+	public Model(FloatBuffer vertexBuffer, ShortBuffer drawListBuffer, int verticesCount, MyGLES20 gles20,
+			ContextManager contextManager) {
+		this(vertexBuffer, drawListBuffer, verticesCount, new SampleVertexShader(), new SampleFragmentShader(), gles20,
+				contextManager);
 	}
 
 	public Model(FloatBuffer vertexBuffer, ShortBuffer drawListBuffer, int verticesCount, Shader vertexShader,
-			Shader fragmentShader, MyGLES20 gles20) {
+			Shader fragmentShader, MyGLES20 gles20, ContextManager contextManager) {
 		this.vertexBuffer = vertexBuffer;
 		this.drawListBuffer = drawListBuffer;
 		this.verticesCount = verticesCount;
 		this.gles20 = gles20;
+		this.contextManager = contextManager;
 		this.vertexShader = vertexShader;
 		this.fragmentShader = fragmentShader;
 
@@ -78,7 +86,7 @@ public class Model implements Drawable {
 	}
 
 	public void draw(float[] vpMatrix) {
-		Matrix.multiplyMM(mvpMatrix, 0, vpMatrix, 0, modelMatrix, 0);
+		Matrix.multiplyMM(mvpMatrix, 0, modelMatrix, 0, vpMatrix, 0);
 
 		gles20.glUseProgram(program);
 
@@ -86,6 +94,19 @@ public class Model implements Drawable {
 		gles20.glEnableVertexAttribArray(positionHandle);
 		gles20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false,
 			COORDS_PER_VERTEX * BYTES_PER_FLOAT, vertexBuffer);
+
+		Map<Integer, PointLight> pointLights = contextManager.getCurrentContext().getPointLights();
+		float[] pointLightsArray = new float[pointLights.size() * 3];
+		int iPointLight = 0;
+		for (PointLight pointLight : pointLights.values()) {
+			Vector3 pointLightPosition = pointLight.getPosition();
+			pointLightsArray[iPointLight] = pointLightPosition.getX();
+			pointLightsArray[iPointLight + 1] = pointLightPosition.getY();
+			pointLightsArray[iPointLight + 2] = pointLightPosition.getZ();
+			iPointLight += 3;
+		}
+		int pointLightsHandle = gles20.glGetUniformLocation(program, "vPointLights");
+		gles20.glUniform3fv(pointLightsHandle, pointLights.size(), pointLightsArray, 0);
 
 		int colorHandle = gles20.glGetUniformLocation(program, "vColor");
 		gles20.glUniform4fv(colorHandle, 1, color, 0);

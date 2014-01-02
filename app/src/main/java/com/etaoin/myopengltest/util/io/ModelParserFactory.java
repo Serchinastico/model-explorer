@@ -1,5 +1,6 @@
 package com.etaoin.myopengltest.util.io;
 
+import com.etaoin.myopengltest.core.main.context.ContextManager;
 import com.etaoin.myopengltest.util.gl.MyGLES20;
 import com.etaoin.myopengltest.util.io.obj.ObjParser;
 
@@ -17,9 +18,12 @@ public class ModelParserFactory {
 
 	private MyGLES20 gles20;
 
-	public ModelParserFactory(FileReader fileReader, MyGLES20 gles20) {
+	private ContextManager contextManager;
+
+	public ModelParserFactory(FileReader fileReader, MyGLES20 gles20, ContextManager contextManager) {
 		this.fileReader = fileReader;
 		this.gles20 = gles20;
+		this.contextManager = contextManager;
 	}
 
 	public ModelParser createModelParser(int type, String path) throws IOException, InvalidModelParserTypeException {
@@ -27,7 +31,7 @@ public class ModelParserFactory {
 		switch (type) {
 			case OBJ_MODEL_TYPE:
 				BufferedReader reader = fileReader.toBufferedReader(path);
-				modelParser = new ObjParser(reader, gles20);
+				modelParser = new ObjParser(reader, gles20, contextManager);
 				break;
 			default:
 				throw new InvalidModelParserTypeException(type);

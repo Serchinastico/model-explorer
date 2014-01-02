@@ -21,6 +21,8 @@ public interface MyGLES20 {
 	public int glGetUniformLocation(int program, String name);
 	public void glLinkProgram(int program);
 	public void glShaderSource(int shader, String source);
+	public void glUniform3fv(int location, int count, FloatBuffer v);
+	public void glUniform3fv(int location, int count, float[] value, int offset);
 	public void glUniform4fv(int location, int count, FloatBuffer v);
 	public void glUniform4fv(int location, int count, float[] value, int offset);
 	public void glUniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value);

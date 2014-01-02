@@ -7,6 +7,7 @@ import com.etaoin.myopengltest.core.main.context.ContextManager;
 import com.etaoin.myopengltest.core.main.context.GameContext;
 import com.etaoin.myopengltest.core.main.renderers.MainGLRenderer;
 import com.etaoin.myopengltest.core.main.views.MainGLSurfaceView;
+import com.etaoin.myopengltest.util.camera.Camera;
 import com.etaoin.myopengltest.util.geometry.Vector3;
 import com.etaoin.myopengltest.util.gl.MyGLES20;
 import com.etaoin.myopengltest.util.gl.MyGLES20Factory;
@@ -36,14 +37,15 @@ public class MainGLActivity extends Activity {
 		MyGLES20 gles20 = myGLES20Factory.createGLES20(MyGLES20Factory.DEBUG_LEVEL_ALL);
 
 		// Context manager
-		ModelParserFactory modelParserFactory = new ModelParserFactory(new FileReader(), gles20);
+		ContextManager contextManager = new ContextManager();
 		GameContext gameContext = new GameContext();
+		ModelParserFactory modelParserFactory = new ModelParserFactory(new FileReader(), gles20, contextManager);
 
+		gameContext.setCamera(new Camera(new Vector3(3f, 3f, 3f), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f)));
 		gameContext.addDrawable(new Background(gles20));
 		gameContext.addDrawable(createTeapot(modelParserFactory));
 		gameContext.addPointLight(new PointLight(new Vector3(3f, 3f, 3f)));
 
-		ContextManager contextManager = new ContextManager();
 		contextManager.addCurrentContext(gameContext);
 
 		// Renderer & view

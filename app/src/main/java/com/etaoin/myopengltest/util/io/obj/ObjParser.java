@@ -1,5 +1,6 @@
 package com.etaoin.myopengltest.util.io.obj;
 
+import com.etaoin.myopengltest.core.main.context.ContextManager;
 import com.etaoin.myopengltest.util.geometry.Face;
 import com.etaoin.myopengltest.util.geometry.TriangleList;
 import com.etaoin.myopengltest.util.geometry.Vector3;
@@ -19,6 +20,7 @@ public class ObjParser implements ModelParser {
 
 	private BufferedReader content;
 	private MyGLES20 gles20;
+	private ContextManager contextManager;
 	private Vector3List vertices = new Vector3List();
 	private Vector3List normals = new Vector3List();
 	private Vector3List textureCoordinates = new Vector3List();
@@ -26,9 +28,10 @@ public class ObjParser implements ModelParser {
 	private Model model;
 	private boolean isSmoothEnabled = false; // TODO Use?
 
-	public ObjParser(BufferedReader content, MyGLES20 gles20) {
+	public ObjParser(BufferedReader content, MyGLES20 gles20, ContextManager contextManager) {
 		this.content = content;
 		this.gles20 = gles20;
+		this.contextManager = contextManager;
 	}
 
 	public Drawable parse() throws IOException {
@@ -50,7 +53,7 @@ public class ObjParser implements ModelParser {
 			}
 		}
 
-		model = new Model(vertices.toFloatBuffer(), faces.toShortBuffer(), faces.size() * 3, gles20);
+		model = new Model(vertices.toFloatBuffer(), faces.toShortBuffer(), faces.size() * 3, gles20, contextManager);
 		return model;
 	}
 
