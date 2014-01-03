@@ -32,63 +32,66 @@ public class Vector3 {
 		return this.z;
 	}
 
-	public Vector3 addTo(Vector3 v) {
+	public Vector3 add(Vector3 v) {
 		this.x += v.x;
 		this.y += v.y;
 		this.z += v.z;
 		return this;
 	}
 
-	public Vector3 add(Vector3 v) {
-		Vector3 result = clone();
-		return result.addTo(v);
+	public static Vector3 add(Vector3 v1, Vector3 v2) {
+		Vector3 result = v1.clone();
+		return result.add(v2);
 	}
 
-	public Vector3 subTo(Vector3 v) {
+	public Vector3 sub(Vector3 v) {
 		this.x -= v.x;
 		this.y -= v.y;
 		this.z -= v.z;
 		return this;
 	}
 
-	public Vector3 sub(Vector3 v) {
-		Vector3 result = clone();
-		return result.subTo(v);
+	public static Vector3 sub(Vector3 v1, Vector3 v2) {
+		Vector3 result = v1.clone();
+		return result.sub(v2);
 	}
 
-	public Vector3 mulTo(float scalar) {
+	public Vector3 mul(float scalar) {
 		this.x *= scalar;
 		this.y *= scalar;
 		this.z *= scalar;
 		return this;
 	}
 
-	public Vector3 mul(float scalar) {
-		Vector3 result = clone();
-		return result.mulTo(scalar);
+	public static Vector3 mul(Vector3 v, float scalar) {
+		Vector3 result = v.clone();
+		return result.mul(scalar);
 	}
 
 	public float dot(Vector3 v) {
 		return this.x * v.x + this.y * v.y + this.z * v.z;
 	}
 
-	public Vector3 crossTo(Vector3 v) {
-		this.x = y * v.z - z * v.y;
-		this.y = z * v.x - x * v.z;
-		this.z = x * v.y - y * v.x;
+	public Vector3 cross(Vector3 v) {
+		float x = this.y * v.z - this.z * v.y;
+		float y = this.z * v.x - this.x * v.z;
+		float z = this.x * v.y - this.y * v.x;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 		return this;
 	}
 
-	public Vector3 cross(Vector3 v) {
-		Vector3 result = clone();
-		return result.crossTo(v);
+	public static Vector3 cross(Vector3 v1, Vector3 v2) {
+		Vector3 result = v1.clone();
+		return result.cross(v2);
 	}
 
 	public float norm() {
 		return (float) Math.sqrt(x * x + y * y + z * z);
 	}
 
-	public Vector3 normalizeTo() {
+	public Vector3 normalize() {
 		float norm = norm();
 		x /= norm;
 		y /= norm;
@@ -96,8 +99,13 @@ public class Vector3 {
 		return this;
 	}
 
-	public Vector3 normalize() {
-		Vector3 result = clone();
-		return result.normalizeTo();
+	public static Vector3 normalize(Vector3 v) {
+		Vector3 result = v.clone();
+		return result.normalize();
+	}
+
+	@Override
+	public String toString() {
+		return "[x: " + x + ", y: " + y + ", z: " + z + "]";
 	}
 }

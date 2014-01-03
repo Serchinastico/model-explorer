@@ -72,8 +72,8 @@ public class Camera {
 	}
 
 	private void updateUp() {
-		Vector3 lookAtVector = lookAt.sub(eye);
-		Vector3 right = lookAtVector.cross(new Vector3(0f, 0f, 1f));
+		Vector3 lookAtVector = Vector3.sub(lookAt, eye);
+		Vector3 right = Vector3.cross(lookAtVector, new Vector3(0f, 0f, 1f));
 		up = right.cross(lookAtVector).normalize();
 	}
 }
