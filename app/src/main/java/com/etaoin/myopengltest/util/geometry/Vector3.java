@@ -20,6 +20,21 @@ public class Vector3 {
 		return new Vector3(x, y, z);
 	}
 
+	public Vector3 setX(float x) {
+		this.x = x;
+		return this;
+	}
+
+	public Vector3 setY(float y) {
+		this.y = y;
+		return this;
+	}
+
+	public Vector3 setZ(float z) {
+		this.z = z;
+		return this;
+	}
+
 	public float getX() {
 		return this.x;
 	}

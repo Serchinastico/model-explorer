@@ -44,8 +44,8 @@ public class Model implements Drawable {
 	private static final int BYTES_PER_FLOAT = 4;
 	private static final int COORDS_PER_VERTEX = 3;
 
-	private float[] modelMatrix = new float[16];
-	private float[] mvpMatrix = new float[16];
+	private float[] modelMatrix;
+	private float[] mvpMatrix;
 
 	private int program;
 
@@ -70,6 +70,8 @@ public class Model implements Drawable {
 		this.contextManager = contextManager;
 		this.vertexShader = vertexShader;
 		this.fragmentShader = fragmentShader;
+		this.modelMatrix = new float[16];
+		this.mvpMatrix = new float[16];
 
 		// TODO Configurable!
 		Matrix.setIdentityM(modelMatrix, 0);
@@ -95,6 +97,7 @@ public class Model implements Drawable {
 		gles20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false,
 			COORDS_PER_VERTEX * BYTES_PER_FLOAT, vertexBuffer);
 
+		// TODO Nonsense calculations here...
 		Map<Integer, PointLight> pointLights = contextManager.getCurrentContext().getPointLights();
 		float[] pointLightsArray = new float[pointLights.size() * 3];
 		int iPointLight = 0;

@@ -1,7 +1,6 @@
 package com.etaoin.myopengltest.core.main.renderers;
 
 import android.opengl.GLSurfaceView;
-import android.opengl.Matrix;
 import com.etaoin.myopengltest.core.main.context.ContextManager;
 import com.etaoin.myopengltest.util.camera.Camera;
 import com.etaoin.myopengltest.util.gl.MyGLES20;
@@ -17,10 +16,6 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 	private ContextManager contextManager;
 
 	private MyGLES20 gles20;
-
-	private float[] projectionMatrix = new float[16];
-	private float[] viewMatrix = new float[16];
-	private float angle = 0f;
 
 	public MainGLRenderer(ContextManager contextManager, MyGLES20 gles20) {
 		this.contextManager = contextManager;
@@ -45,5 +40,9 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onDrawFrame(GL10 gl10) {
 		contextManager.draw();
+	}
+
+	public ContextManager getContextManager() {
+		return contextManager;
 	}
 }
